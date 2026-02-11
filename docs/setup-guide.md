@@ -2,6 +2,10 @@
 
 This guide will help you set up your development environment for the Embedded C/C++ course.
 
+# link to this class repo
+https://github.com/Anaga/embedded-course-2026
+
+
 ## Required Software
 
 ### 1. Visual Studio Code
@@ -31,7 +35,7 @@ This guide will help you set up your development environment for the Embedded C/
 **Verify:**
 ```bash
 git --version
-# Should show: git version 2.x.x
+# Should show: git version 2.x.x dhjfgh
 ```
 
 ### 4. Python (required for PlatformIO)
@@ -42,7 +46,7 @@ git --version
 - **Important:** Check "Add Python to PATH" during installation
 
 
-## Hardware Drivers
+## Hardware Drivers dghjh
 
 ### For STM32 (ST-Link)
 **Windows:**
@@ -188,11 +192,3 @@ sudo usermod -a -G dialout $USER
 - STM32 Docs: https://www.st.com/en/microcontrollers-microprocessors/stm32-32-bit-arm-cortex-mcus.html
 
 ---
-
-**Before first class, make sure you have:**
-- ✅ VSCode installed
-- ✅ PlatformIO working (test with blink project)
-- ✅ Git configured
-- ✅ SSH keys added to GitHub
-- ✅ Your course repository created
-- ✅ Instructor added as collaborator
