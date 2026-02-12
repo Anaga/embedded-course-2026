@@ -1,64 +1,79 @@
-# PlatformIO
+#################################################
+# PLATFORMIO
+#################################################
+
 .pio/
-.vscode/
 .pioenvs/
 .piolibdeps/
+.platformio/
 
-# Build artifacts
-*.o
-*.elf
-*.bin
-*.hex
+# VS Code (ignore everywhere)
+**/.vscode/
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/c_cpp_properties.json
 
-# OS
-.DS_Store
-Thumbs.db
 
-# Prerequisites
-*.d
-
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+#################################################
+# BUILD ARTIFACTS (C / C++)
+#################################################
 
 # Executables
 *.exe
 *.out
 *.app
-*.i*86
-*.x86_64
-*.hex
 
-# Debug files
+# Object files
+*.o
+*.obj
+*.ko
+
+# Libraries
+*.a
+*.lib
+*.la
+*.lo
+
+# Shared libraries
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Debug symbols
+*.pdb
+*.idb
 *.dSYM/
 *.su
-*.idb
-*.pdb
+*.dwo
 
-# Kernel Module Compile Results
+# Linker files
+*.elf
+*.bin
+*.hex
+*.map
+*.exp
+*.ilk
+
+#################################################
+# COMPILER TEMP FILES
+#################################################
+
+*.d
+*.gch
+*.pch
+
+#################################################
+# OS FILES
+#################################################
+
+.DS_Store
+Thumbs.db
+
+#################################################
+# LINUX KERNEL (safe ignore)
+#################################################
+
 *.mod*
 *.cmd
 .tmp_versions/
@@ -66,6 +81,3 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-
-# debug information files
-*.dwo
