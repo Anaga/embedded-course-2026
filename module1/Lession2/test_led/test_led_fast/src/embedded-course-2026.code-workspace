@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../../../.."
+		},
+		{
+			"name": "test_led_fast",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
