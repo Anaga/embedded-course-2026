@@ -18,7 +18,7 @@
 void setup() {
     // Initialize Serial communication
     Serial.begin(115200);
-    delay(1000);
+    delay(10000);
     
     // Configure LED pin
     pinMode(LED_PIN, OUTPUT);
@@ -28,15 +28,15 @@ void setup() {
     // ========================================
     // 1. sizeof() Demonstration
     // ========================================
-    Serial.println("--- sizeof() Demonstration ---");
-    Serial.printf("uint8_t:  %d byte\n", sizeof(uint8_t));
-    Serial.printf("uint16_t: %d bytes\n", sizeof(uint16_t));
-    Serial.printf("uint32_t: %d bytes\n", sizeof(uint32_t));
-    Serial.printf("int8_t:   %d byte\n", sizeof(int8_t));
-    Serial.printf("int16_t:  %d bytes\n", sizeof(int16_t));
-    Serial.printf("int32_t:  %d bytes\n", sizeof(int32_t));
-    Serial.printf("float:    %d bytes\n", sizeof(float));
-    Serial.printf("double:   %d bytes\n", sizeof(double));
+    Serial.println("--- sizeof() Demonstration ---\n\r");
+    Serial.printf("uint8_t:  %d byte\n\r", sizeof(uint8_t));
+    Serial.printf("uint16_t: %d bytes\n\r", sizeof(uint16_t));
+    Serial.printf("uint32_t: %d bytes\n\r", sizeof(uint32_t));
+    Serial.printf("int8_t:   %d byte\n\r", sizeof(int8_t));
+    Serial.printf("int16_t:  %d bytes\n\r", sizeof(int16_t));
+    Serial.printf("int32_t:  %d bytes\n\r", sizeof(int32_t));
+    Serial.printf("float:    %d bytes\n\r", sizeof(float));
+    Serial.printf("double:   %d bytes\n\r", sizeof(double));
     Serial.println();
     
     // ========================================
@@ -57,7 +57,7 @@ void setup() {
     Serial.println("--- Type Casting Demonstration ---");
     
     // Example 1: Data loss when downsizing
-    uint16_t big = 1000;
+    uint16_t big = 100;
     uint8_t small = big;  // Implicit cast - data loss!
     Serial.printf("big (uint16_t) = %d\n", big);
     Serial.printf("small (uint8_t) = %d (data loss!)\n", small);
