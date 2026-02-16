@@ -18,11 +18,14 @@ int main(void)
 
 /*
  * read_int_in_range()
- * Robust input:
- *  - reads a line with fgets
- *  - parses with strtol
- *  - validates range and trailing characters
+ *
+ * Reads an integer from stdin and validates:
+ *  - numeric conversion using strtol
+ *  - no trailing invalid characters
+ *  - no overflow (ERANGE)
+ *  - value within [min, max]
  */
+
 static int read_int_in_range(const char *prompt, int min, int max)
 {
     char buf[128];
@@ -42,24 +45,24 @@ static int read_int_in_range(const char *prompt, int min, int max)
         errno = 0;
         val = strtol(buf, &end, 10);
 
-        /* No digits found */
+        /* Check for conversion failure (no digits found) */
         if (end == buf) {
             printf("Please enter a number.\n");
             continue;
         }
 
-        /* Range errors for long */
+        /* Detect overflow or underflow */
         if (errno == ERANGE || val < LONG_MIN || val > LONG_MAX) {
             printf("Number out of range.\n");
             continue;
         }
 
-        /* Skip trailing spaces */
+        /* Skip trailing whitespace */
         while (*end == ' ' || *end == '\t' || *end == '\n' || *end == '\r') {
             end++;
         }
 
-        /* If there are leftover non-space chars, input was not чисто number */
+        /* Reject input with extra non-whitespace characters */
         if (*end != '\0') {
             printf("Invalid characters after the number.\n");
             continue;
