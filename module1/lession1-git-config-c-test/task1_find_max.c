@@ -25,10 +25,24 @@
  * returns: maximum value from the array
  */
 int findMax(int arr[], int size) {
+    int maxVal = arr[0];
+    int curVal = 0;
+    for (int i = 0; i<size; i++) {
+        curVal = arr[i];
+        printf("   cur val: %d   ", curVal);
+        if (curVal > maxVal) {
+            maxVal = curVal;
+        }
+        printf("   maxVal val: %d   ", maxVal);
+    }
+
+    printf("\n New Line shall be ! \n");
+
+
     // TODO: Your code here
     // Hint: Initialize max with first element, then iterate through array
     
-    return 0; // Replace with actual result
+    return maxVal; // Replace with actual result
 }
 
 /*
