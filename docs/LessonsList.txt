@@ -1,0 +1,35 @@
++3
+ M1 - Intro
+L1
+L2
+L3
+
+ M2 - Fundamentals of Programming in C
+L1 - 11.02 - SSH, git, repo
+L2 - 16.02 - Data types
+L3 - 18.02 - Control Flow                    -NUMBER 8
+L4 - 23.02 - Struct, pointers
+L5 - 25.02 - Enums, inter, timers, pwm       -NUMBER 10
+
+ M3 - Fundamentals of C++ for Microcontrollers
+L1 - 04.03 - Classes, objects, encapsulation   -NUMBER 11
+L2 - 06.03 - Inheritance, templates, data structures
+L3 - 11.03 - RAII, memory handling, standard libraries
+L4 - 13.03 - Creating peripheral control libraries  -NUMBER 14
+
+ M4 - Diffrent MCUs
+L1 - 18.03 - UART, I2C, SPI
+L2 - 20.03
+L3 - 25.03
+L4 - 27.03
+L5 - 01.04  -NUMBER 19
+
+ M5 - Debugging and testing + M6 - Final Project
+L1 - 03.04  -NUMBER 20
+L2 - 08.04
+L3 - 10.04
+L4 - 15.04
+L5 - 17.04
+P1 - 22.04
+P1 - 24.04 -NUMBER 26
+
