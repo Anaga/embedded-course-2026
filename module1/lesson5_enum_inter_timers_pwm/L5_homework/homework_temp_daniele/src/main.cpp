@@ -1,207 +1,128 @@
- /*
- * Hardware:
- *   - ESP32-C3 Super Mini
- *   - Common Cathode RGB LED on GPIO1 (R), GPIO3 (G), GPIO10 (B)
- *   - 220 ohm resistor on each color channel
- *   - Button on GPIO0 (active LOW, internal pull-up)
- * 
- *  * Two channels: Red and Green
- * Button press starts a slow crossfade between them
- * 
- * API: ESP32 Arduino Core 2.x (ledcSetup / ledcAttachPin)
- * 
- * 
- * Wiring:
- *   GPIO3 -> -> Red 
- *   GPIO4 -> 220R -> Green 
- *   GPIO5 -> 220R -> Blue 
- *   Common anode -> 220R -> GND
- *   Button: GPIO9 -> button -> GND
- */
-
 #include <Arduino.h>
 #include <stdint.h>
 
+/*
+ * Lesson 5 - HOMEWORK5
+ * RGB Color Wheel using PWM (LEDC old API)
+ *
+ * Target behavior:
+ *   Smooth color wheel:
+ *     Red -> Green -> Blue -> Red (continuous loop)
+ *   Total cycle time: about 3..6 seconds (here ~5.8s)
+ *   Print current phase on Serial
+ *
+ * Hardware (ESP32-C3):
+ *   - RGB LED common cathode (common pin -> GND)
+ *   - R -> GPIO3 (with 220R)
+ *   - G -> GPIO4 (with 220R)
+ *   - B -> GPIO5 (with 220R)
+ *
+ * Notes:
+ *   - We use 8-bit PWM (0..255)
+ *   - HOLD_MS is used to keep pure colors visible for human eye
+ */
 
 // ============================================================
-// Pin Definitions
+// Pin Definitions (HOMEWORK5)
 // ============================================================
-#define PIN_RED     1
-#define PIN_GREEN   3
-#define PIN_BLUE    10
-#define PIN_BUTTON  0
+#define PIN_RED     3
+#define PIN_GREEN   4
+#define PIN_BLUE    5
 
-// --- LEDC Channels (old API uses channels, not pins!) ---
+// ============================================================
+// LEDC Channels (old API)
+// ============================================================
 #define CH_RED      0
 #define CH_GREEN    1
+#define CH_BLUE     2
 
 // ============================================================
 // PWM Configuration
 // ============================================================
 #define PWM_FREQ    5000    // 5 kHz
-#define PWM_RES     8       // 8-bit: 0..255
+#define PWM_RES     8       // 8-bit resolution: duty 0..255
+#define PWM_MAX     255
 
 // ============================================================
-// Debounce
+// Timing
+// Cycle time ≈ 3 phases * 256 steps * STEP_DELAY_MS + 3 * HOLD_MS
+// STEP_DELAY_MS=7 and HOLD_MS=150 => about 5.8 seconds total
 // ============================================================
-#define DEBOUNCE_MS 250
+#define STEP_DELAY_MS  7
+#define HOLD_MS        150
 
 // ============================================================
-// Color Enum - clean, readable state management
-// ============================================================
-typedef enum {
-    COLOR_RED,
-    COLOR_GREEN,
-    COLOR_BLUE,
-    COLOR_YELLOW,
-    COLOR_CYAN,
-    COLOR_MAGENTA,
-    COLOR_WHITE,
-    COLOR_ORANGE,
-    COLOR_COUNT         // Always last! Used for modulo wrap-around
-} color_t;
-
-// Color Data Structure - maps enum to RGB values
+// BONUS: phase table (embedded pattern)
+// Each phase crossfades between two channels:
+//   - one channel goes down (255 -> 0)
+//   - the other channel goes up   (0 -> 255)
 // ============================================================
 typedef struct {
-    uint8_t     r;
-    uint8_t     g;
-    uint8_t     b;
-    const char* name;   // For serial output
-} rgb_color_t;
+    uint8_t ch_down;
+    uint8_t ch_up;
+    const char *name;    // printed on Serial
+} phase_t;
 
-// Color lookup table - indexed by color_t enum
-// This pattern (enum + struct array) is very common in embedded!
-static const rgb_color_t COLOR_TABLE[COLOR_COUNT] = {
-    [COLOR_RED]     = { .r = 255, .g =   0, .b =   0, .name = "Red"     },
-    [COLOR_GREEN]   = { .r =   0, .g = 255, .b =   0, .name = "Green"   },
-    [COLOR_BLUE]    = { .r =   0, .g =   0, .b = 255, .name = "Blue"    },
-    [COLOR_YELLOW]  = { .r = 255, .g = 255, .b =   0, .name = "Yellow"  },
-    [COLOR_CYAN]    = { .r =   0, .g = 255, .b = 255, .name = "Cyan"    },
-    [COLOR_MAGENTA] = { .r = 255, .g =   0, .b = 255, .name = "Magenta" },
-    [COLOR_WHITE]   = { .r = 255, .g = 255, .b = 255, .name = "White"   },
-    [COLOR_ORANGE]  = { .r = 255, .g = 128, .b =   0, .name = "Orange"  },
+static const phase_t PHASES[] = {
+    { CH_RED,   CH_GREEN, "Phase: R -> G" },
+    { CH_GREEN, CH_BLUE,  "Phase: G -> B" },
+    { CH_BLUE,  CH_RED,   "Phase: B -> R" },
 };
 
+// Write only two active channels (third one forced to 0)
+static void setOnlyTwoChannels(uint8_t ch1, uint8_t v1, uint8_t ch2, uint8_t v2)
+{
+    ledcWrite(CH_RED,   0);
+    ledcWrite(CH_GREEN, 0);
+    ledcWrite(CH_BLUE,  0);
 
-// ============================================================
-// ISR Shared Variables
-// ============================================================
-volatile bool     btnPressed   = false;
-volatile uint32_t lastPressMs  = 0;
-
-// ============================================================
-// State
-// ============================================================
-color_t currentColor = COLOR_RED;
-bool goingToGreen = true;
-
-// ============================================================
-// ISR - Button press handler
-// ============================================================
-void IRAM_ATTR onButtonPress() {
-    uint32_t now = millis();
-    if (now - lastPressMs > DEBOUNCE_MS) {
-        lastPressMs = now;
-        btnPressed  = true;
-        goingToGreen = !goingToGreen;
-    }
+    ledcWrite(ch1, v1);
+    ledcWrite(ch2, v2);
 }
 
-// ============================================================
-// Set RG output (writes to channels)
-// ============================================================
-void setRG(uint8_t r, uint8_t g) {
-    ledcWrite(CH_RED,   r);
-    ledcWrite(CH_GREEN, g);
-}
+void setup()
+{
+    Serial.begin(115200);
+    delay(200);
+    Serial.println("RGB Color Wheel - Homework 5");
 
-// ============================================================
-// colorSwap - smooth crossfade between two colors
-//
-//   colorA:   starting color
-//   colorB:   target color
-//   swapTime: total transition time in milliseconds
-// ============================================================
-void colorSwap(const rgb_color_t* colorA,
-               const rgb_color_t* colorB,
-               uint32_t swapTime) {
-
-    const uint16_t steps = 256;
-    uint32_t stepDelay   = swapTime / steps;
-
-    Serial.printf("Fade: %s -> %s (%lu ms)\n",
-                   colorA->name, colorB->name, swapTime);
-
-    for (uint16_t i = 0; i <= steps; i++) {
-        // Linear interpolation: A*(1-t) + B*t
-        // where t = i / steps
-        uint8_t r = colorA->r + (int16_t)(colorB->r - colorA->r) * i / steps;
-        uint8_t g = colorA->g + (int16_t)(colorB->g - colorA->g) * i / steps;
-
-        setRG(r, g);
-        delay(stepDelay);
-    }
-}
-
-
-// ============================================================
-// Setup
-// ============================================================
-#define SERIAL_SPEED 115200
-#define STARTUP_DELAY 1500
-
-void setup() {
-    Serial.begin(SERIAL_SPEED);
-    delay(STARTUP_DELAY);
-    Serial.println(" ================================================= ");
-    Serial.println("|  R-G PWM cross fade controller -  Lesson 5 Demo  |");
-    Serial.println(" ================================================= ");
-    Serial.println("Press button to swap colors.\n");
-
-    // Old API: step 1 - configure channel
+    // Old LEDC API: configure channels
     ledcSetup(CH_RED,   PWM_FREQ, PWM_RES);
     ledcSetup(CH_GREEN, PWM_FREQ, PWM_RES);
-  
-    // Old API: step 2 - attach pin to channel
+    ledcSetup(CH_BLUE,  PWM_FREQ, PWM_RES);
+
+    // Old LEDC API: attach pins to channels
     ledcAttachPin(PIN_RED,   CH_RED);
     ledcAttachPin(PIN_GREEN, CH_GREEN);
+    ledcAttachPin(PIN_BLUE,  CH_BLUE);
 
-    // Configure button with internal pull-up
-    pinMode(PIN_BUTTON, INPUT_PULLUP);
-    
-    // Attach interrupt - FALLING edge (button press = HIGH -> LOW)
-    attachInterrupt(digitalPinToInterrupt(PIN_BUTTON), onButtonPress, FALLING);
-
-    // Set initial color
-    const rgb_color_t* c = &COLOR_TABLE[currentColor];
-    setRG(c->r, c->g);
-    Serial.printf("Start: %s\n\n", c->name);
-
+    // Start from pure Red
+    setOnlyTwoChannels(CH_RED, PWM_MAX, CH_GREEN, 0);
+    delay(HOLD_MS);
 }
 
-// ============================================================
-// Main Loop
-// ============================================================
-//   2 const color for this example
-//      red =  &COLOR_TABLE[COLOR_RED]
-//      and
-//      green = &COLOR_TABLE[COLOR_GREEN]
-//
+void loop()
+{
+    // Repeat forever through all phases
+    for (size_t p = 0; p < (sizeof(PHASES) / sizeof(PHASES[0])); ++p)
+    {
+        Serial.println(PHASES[p].name);
 
-const rgb_color_t* red = &COLOR_TABLE[COLOR_RED];
-const rgb_color_t* gren = &COLOR_TABLE[COLOR_GREEN];
-const uint16_t swap_time = 1500; //1500ms - 1,5 sec
-void loop() {
-    if (btnPressed) {
-        btnPressed = false;        
-        Serial.printf("Fading %s...\n", goingToGreen ? "Red -> Green" : "Green -> Red");
-        if (goingToGreen) {
-            Serial.println("Tick");
-            colorSwap(red, gren, swap_time);
-        } else {
-            Serial.println("Tack");
-            colorSwap(gren, red, swap_time);
+        // 256 steps linear interpolation
+        for (uint16_t t = 0; t <= PWM_MAX; ++t)
+        {
+            uint8_t down = (uint8_t)(PWM_MAX - t); // 255 -> 0
+            uint8_t up   = (uint8_t)t;             // 0 -> 255
+
+            setOnlyTwoChannels(PHASES[p].ch_down, down,
+                               PHASES[p].ch_up,   up);
+
+            delay(STEP_DELAY_MS);
+
+            // Hold the pure target color at the end of each phase
+            if (t == PWM_MAX) {
+                delay(HOLD_MS);
+            }
         }
     }
 }
