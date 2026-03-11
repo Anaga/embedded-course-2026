@@ -3,7 +3,7 @@
 Embedded Systems Course 2026 | ESP32-C3 Super Mini
 
 ---
-.
+ 
 ## Overview
 
 This lesson builds on the `point` class from Lesson 6. We introduce:

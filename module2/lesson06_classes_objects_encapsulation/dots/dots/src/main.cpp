@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <stdint.h>
 
-#include "dots.h"
+#include "dots.cpp"
 
 // ============================================================
 // Setup
@@ -21,6 +21,9 @@ void setup() {
     point point_zero;
     Serial.println("point_zero created");
     delay(50);
+
+    point bunny;
+    point centre;
 
     point_zero.print();
 
@@ -44,9 +47,9 @@ void setup() {
 
 void loop() {
             Serial.println("Tick");
-            delay(500); 
+            delay(5000); 
 
             Serial.println("Tack");
-            delay(500); 
+            delay(5000); 
         }
 
