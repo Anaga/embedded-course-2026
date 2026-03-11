@@ -24,7 +24,7 @@ void point::print()
 
 uint8_t point::distance(point A, point B)
 {
-    uint8_t delta_x = A.x - B.x;
-    uint8_t delta_y = A.y - B.y;
+    uint8_t delta_x = A.x - B.y; // 1.1 
+    uint8_t delta_y = A.x - B.y;
     return delta_x + delta_y;
 }
