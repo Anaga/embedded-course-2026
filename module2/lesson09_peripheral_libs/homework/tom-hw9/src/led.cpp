@@ -25,7 +25,7 @@ void Led::off()
     setDutyCycle(0);
 }
 
-// is using the cycle so _duty & _fade Target are untouched
+// is using the cycle so _duty & _fade Target are untouched 
 void Led::toggle()
 {
     setDutyCycle(_duty > 0 ? 0 : 255);

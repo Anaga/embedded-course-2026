@@ -3,15 +3,16 @@
 
 namespace drivers {
 
+// impliments constructor i think
 Button::Button(uint8_t pin)
     : DigitalPin(pin, INPUT_PULLUP)   // base class calls pinMode()
     , _pressed(false)
     , _lastMs(0)
 {
-// idk    _pressed = (digitalRead(_pin) == LOW);
+// im pretty lost rn ngl
 }
 
-bool Button::isPressed() const
+bool Button::isPressed() const // here's isPressed, checkes the press state, such useful comment ik
 {
     return _pressed;
 }
