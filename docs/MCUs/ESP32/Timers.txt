@@ -1,0 +1,1 @@
+https://esp32.co.uk/testing-esp32-hardware-timers-with-interrupts-beginner-friendly-guide/
