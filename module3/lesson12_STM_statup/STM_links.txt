@@ -1,0 +1,12 @@
+Getting started with STM32: STM32 step-by-step
+https://wiki.st.com/stm32mcu/wiki/Category:Getting_started_with_STM32_:_STM32_step_by_step
+
+STM MCU portfolio
+https://wiki.st.com/stm32mcu/wiki/STM32StepByStep:STM32MCU_basics
+
+Nucleo bord descriptions:
+https://os.mbed.com/platforms/ST-Nucleo-F334R8/
+
+Links to SW:
+CubeMx
+https://www.st.com/en/development-tools/stm32cubemx.html
