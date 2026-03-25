@@ -17,7 +17,7 @@ using namespace common;
 // ---------------------------------------------------------------------------
 
 Joystick joy(4, 0, 6);       // pin_x, pin_y, pin_btn
-RgbLed   led(3, 10, 2);      // pin_r, pin_g, pin_b
+RgbLed   led(3, 1, 2);      // pin_r, pin_g, pin_b
 
 void setup() {
     Serial.begin(115200);
@@ -60,8 +60,10 @@ void loop() {
         Serial.print(y);
         Serial.print("  btn=");
         Serial.print(joy.isPressed() ? "DOWN" : "up");
-        Serial.print("  t=");
+        Serial.print("  t_x=");
         Serial.print(t_x);
+        Serial.print("  t_y=");
+        Serial.print(t_y);
         Serial.print("  color=");
         Serial.print(c.r);
         Serial.print(",");
