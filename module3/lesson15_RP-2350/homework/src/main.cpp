@@ -121,7 +121,7 @@ void init_pins() {
 void pattern_both() {
     // TODO: both LEDs on, delay, both off, delay
     // CONTINUE FROM HERE
-    static uint32_t cycle = 0;
+    static uint32_t cycle = 0; //ffm(for future me) prolly wrong btw 
     
     gpio_put(LED_A_PIN, LED_B_PIN, 1);
     Serial.print("Blink #");
