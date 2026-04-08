@@ -32,6 +32,10 @@ static const uint LED_A_PIN  = 15;
 static const uint LED_B_PIN  = 14;
 static const uint BUTTON_PIN = 13;   // Active LOW (pulled up internally)
 
+// ----- Blink timing --------------------------------------
+static const uint32_t BLINK_ON_MS  = 500;
+static const uint32_t BLINK_OFF_MS = 500;
+
 // ----- Pattern definitions -------------------------------
 static const int NUM_PATTERNS = 3;
 static const char* PATTERN_NAMES[] = {
@@ -88,12 +92,19 @@ static int current_pattern = 0;
 void init_pins() {
     // --- LED A (GPIO 15) ---
     // TODO: initialize LED A pin as output, set to LOW
-
+    gpio_init(LED_A_PIN);
+    gpio_set_dir(LED_A_PIN, GPIO_OUT);
+    gpio_put(LED_A_PIN, 0); 
     // --- LED B (GPIO 14) ---
     // TODO: initialize LED B pin as output, set to LOW
-
+    gpio_init(LED_B_PIN);
+    gpio_set_dir(LED_B_PIN, GPIO_OUT);
+    gpio_put(LED_B_PIN, 0); 
     // --- Button (GPIO 13) ---
     // TODO: initialize button pin as input with pull-up
+    gpio_init(BUTTON_PIN);
+    gpio_set_dir(BUTTON_PIN, GPIO_IN);
+    gpio_put(BUTTON_PIN, 0); 
 }
 
 // =============================================================
@@ -109,6 +120,23 @@ void init_pins() {
 // =============================================================
 void pattern_both() {
     // TODO: both LEDs on, delay, both off, delay
+    // CONTINUE FROM HERE
+    static uint32_t cycle = 0;
+    
+    gpio_put(LED_A_PIN, LED_B_PIN, 1);
+    Serial.print("Blink #");
+    Serial.print(cycle);
+    Serial.println("  ON");
+    sleep_ms(BLINK_ON_MS);
+
+    // LED OFF
+    gpio_put(LED_PIN, 0);
+    Serial.print("Blink #");
+    Serial.print(cycle);
+    Serial.println("  OFF");
+    sleep_ms(BLINK_OFF_MS);
+
+    cycle++;
 }
 
 void pattern_alternate() {
