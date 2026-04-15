@@ -1,0 +1,8 @@
+Home assignment (optional):
+
+Code is given in files Receiver and Transmitter
+
+1. Use the breadboard with LED ring as a receiver
+2. Use the breadboard with 3 variable resistors as transmitter
+3. Switch ON all LEDs on the ring 
+4. Transmit the color (RGB) from the transmitter to receiver. LED on the receiver should have the color code set up on the tranciever
