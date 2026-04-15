@@ -1,4 +1,4 @@
-# Lesson 17 -- PIO: Hardware WS2812 Driver
+# Lesson 18 -- PIO: Hardware WS2812 Driver
 
 ## Overview
 
