@@ -16,6 +16,21 @@ Dependencies (managed by PlatformIO)
 - bblanchon/ArduinoJson ^7.0.0
 - adafruit/Adafruit NeoPixel ^1.12.3
 
+Mac COM port Config
+
+Auto-detected: /dev/cu.usbmodem1301
+Uploading .pio/build/lolin_c3_mini/firmware.bin
+esptool.py v4.11.0
+Serial port /dev/cu.usbmodem1301
+Connecting...
+
+Run
+
+  git config --global user.email "bobyrev.bob@gmail.com"
+  git config --global user.name "Aleksandr Bobyrev"
+
+to set your account's default identity.
+
 Setup
 -----
 1. Open include/config.h.

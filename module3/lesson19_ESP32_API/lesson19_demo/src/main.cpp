@@ -5,6 +5,7 @@
 #include "wifi_helper.h"
 #include "elering.h"
 #include "led.h"
+#include <WiFi.h>
 
 // ---------------------------------------------------------------------------
 // printSummary
@@ -71,6 +72,13 @@ void setup() {
 void loop() {
     static uint32_t lastRefresh = 0UL;
     String currentSSID = WiFi.SSID();
+<<<<<<< HEAD
+=======
+
+    Serial.println("Checking WiFi connection...");
+    Serial.println("Current SSID: " + currentSSID);
+
+>>>>>>> 6cbc59c05515da681a0f4b57d62a5a2118dfa7ca
 
     // Serial.printf
     if (millis() - lastRefresh >= REFRESH_INTERVAL_MS) {
