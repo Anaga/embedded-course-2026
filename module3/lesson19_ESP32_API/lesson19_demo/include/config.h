@@ -3,8 +3,8 @@
 // ------------------------------------------------------------
 // WiFi credentials -- do not commit to a public repository
 // ------------------------------------------------------------
-static const char* SSID     = "YOUR_SSID";
-static const char* PASSWORD = "YOUR_PASSWORD";
+static const char* SSID     = "";
+static const char* PASSWORD = "";
 
 // ------------------------------------------------------------
 // NTP

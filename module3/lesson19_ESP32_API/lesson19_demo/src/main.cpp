@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <WiFi.h>
 
 #include "config.h"
 #include "wifi_helper.h"
@@ -69,7 +70,9 @@ void setup() {
 // ---------------------------------------------------------------------------
 void loop() {
     static uint32_t lastRefresh = 0UL;
+    String currentSSID = WiFi.SSID();
 
+    // Serial.printf
     if (millis() - lastRefresh >= REFRESH_INTERVAL_MS) {
         lastRefresh = millis();
         refreshData();
