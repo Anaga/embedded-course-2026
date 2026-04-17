@@ -56,7 +56,7 @@ static void refreshData() {
 void setup() {
     Serial.begin(115200);
     delay(1000);
-    Serial.println("Lesson 17 - REST APIs and JSON on ESP32");
+    Serial.println("Lesson 19 - REST APIs and JSON on ESP32");
 
     initLed();
     connectWiFi();
@@ -72,12 +72,13 @@ void loop() {
     static uint32_t lastRefresh = 0UL;
     String currentSSID = WiFi.SSID();
 
-    Serial.println("Checking WiFi connection...");
-    Serial.println("Current SSID: " + currentSSID);
+    //Serial.println("Checking WiFi connection...");
+    //Serial.println("Current SSID: " + currentSSID);
 
 
     if (millis() - lastRefresh >= REFRESH_INTERVAL_MS) {
         lastRefresh = millis();
         refreshData();
+        Serial.println("Current SSID: " + currentSSID);
     }
 }

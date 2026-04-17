@@ -3,3 +3,6 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+
+# Ignore config.h as it contains sensitive information like WiFi credentials
+include/config.h
