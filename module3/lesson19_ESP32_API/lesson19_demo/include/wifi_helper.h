@@ -1,5 +1,5 @@
 #pragma once
-
+#include <Arduino.h>
 #include <stdint.h>
 
 // Connect to WiFi using credentials from config.h.

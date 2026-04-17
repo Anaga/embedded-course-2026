@@ -9,7 +9,7 @@ static const char* PASSWORD = "YOUR_PASSWORD";
 // ------------------------------------------------------------
 // NTP
 // ------------------------------------------------------------
-// EET = UTC+2 = 7200 seconds. DST set to 0 for simplicity.
+// EET = UTC+2 = 7200 seconds. DST set to 3600 seconds for summer time sity
 static const long TZ_OFFSET  = 7200L;
 static const int  DST_OFFSET = 0;
 
