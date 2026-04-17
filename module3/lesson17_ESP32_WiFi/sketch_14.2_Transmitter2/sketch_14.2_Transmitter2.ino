@@ -17,7 +17,11 @@ void setup() {
 
   WiFi.mode(WIFI_STA);
 
+<<<<<<< HEAD
   // Fixing the channel ESP-NOW (очень помогает)
+=======
+  // фиксируем канал для ESP-NOW (очень помогает)
+>>>>>>> 4cb65eecf0767e5f6b7c7bd3e223732c684506fb
   esp_wifi_set_channel(1, WIFI_SECOND_CHAN_NONE);
 
   if (esp_now_init() != ESP_OK) {
@@ -41,8 +45,13 @@ void setup() {
 }
 
 void loop() {
+<<<<<<< HEAD
   const char* msg = "Hello";
   esp_err_t r = esp_now_send(peerMac, (const uint8_t*)msg, strlen(msg)); // string lenght
+=======
+  const char* msg = "FRIDAY TIME!!";
+  esp_err_t r = esp_now_send(peerMac, (const uint8_t*)msg, strlen(msg));
+>>>>>>> 4cb65eecf0767e5f6b7c7bd3e223732c684506fb
 
   if (r == ESP_OK) Serial.println("Sent: Hello");
   else Serial.printf("Send FAILED: %d\n", r);
