@@ -69,3 +69,4 @@ dkms.conf
 
 # debug information files
 *.dwo
+module3/lesson19_ESP32_API/lesson19_demo/include/config.h

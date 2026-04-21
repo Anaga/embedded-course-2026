@@ -5,7 +5,6 @@
 #include "wifi_helper.h"
 #include "elering.h"
 #include "led.h"
-#include <WiFi.h>
 
 // ---------------------------------------------------------------------------
 // printSummary
@@ -57,7 +56,7 @@ static void refreshData() {
 void setup() {
     Serial.begin(115200);
     delay(1000);
-    Serial.println("Lesson 17 - REST APIs and JSON on ESP32");
+    Serial.println("Lesson 19 - REST APIs and JSON on ESP32");
 
     initLed();
     connectWiFi();
@@ -72,17 +71,13 @@ void setup() {
 void loop() {
     static uint32_t lastRefresh = 0UL;
     String currentSSID = WiFi.SSID();
-<<<<<<< HEAD
-=======
 
-    Serial.println("Checking WiFi connection...");
-    Serial.println("Current SSID: " + currentSSID);
+    // Serial.println("Checking WiFi connection...");
+    // Serial.println("Current SSID: " + currentSSID);
 
->>>>>>> 6cbc59c05515da681a0f4b57d62a5a2118dfa7ca
-
-    // Serial.printf
     if (millis() - lastRefresh >= REFRESH_INTERVAL_MS) {
         lastRefresh = millis();
         refreshData();
+        Serial.println("Current SSID: " + currentSSID);
     }
 }

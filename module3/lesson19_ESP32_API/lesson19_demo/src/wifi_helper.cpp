@@ -29,7 +29,7 @@ void syncNTP() {
 
     while (!getLocalTime(&ti)) {
         delay(500);
-        Serial.print(".");
+        Serial.print(",");
     }
 
     Serial.printf("\nTime: %02d:%02d:%02d\n",
